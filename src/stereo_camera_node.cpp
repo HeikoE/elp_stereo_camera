@@ -135,9 +135,16 @@ private:
         sensor_msgs::msg::CameraInfo left_camera_info = left_camera_info_manager_->getCameraInfo();
         sensor_msgs::msg::CameraInfo right_camera_info = right_camera_info_manager_->getCameraInfo();
 
-        // Synchronize headers
-        left_camera_info.header = left_msg->header;
-        right_camera_info.header = right_msg->header;
+        // Synchronize headers with the same timestamp
+        auto current_time = this->now();
+        left_msg->header.stamp = current_time;
+        right_msg->header.stamp = current_time;
+        left_camera_info.header.stamp = current_time;
+        right_camera_info.header.stamp = current_time;
+
+        // Synchronize frame IDs
+        left_camera_info.header.frame_id = left_msg->header.frame_id;
+        right_camera_info.header.frame_id = right_msg->header.frame_id;
 
         // Publish the images and camera info
         left_publisher_->publish(*left_msg);

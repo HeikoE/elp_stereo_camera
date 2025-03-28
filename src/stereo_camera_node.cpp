@@ -45,10 +45,11 @@ public:
             std::bind(&StereoCameraNode::set_right_camera_info, this, std::placeholders::_1, std::placeholders::_2)
         );
 
+        // Set camera params (Static high FPS to minimize motion blur)
         std::string pipeline = "v4l2src device=/dev/video" + std::to_string(video_port_) +
                                " ! image/jpeg, width=" + std::to_string(image_width_) +
                                ", height=" + std::to_string(image_height_) +
-                               ", framerate=" + std::to_string(fps_) + "/1 ! jpegdec ! videoconvert ! appsink";
+                               ", framerate=" + std::to_string(60) + "/1 ! jpegdec ! videoconvert ! appsink"; 
 
         cap_.open(pipeline, cv::CAP_GSTREAMER);
 
@@ -96,23 +97,38 @@ private:
 
     void capture_loop()
     {
-        rclcpp::Rate rate(fps_);
+        // Start a thread to capture frames at a fixed rate (60 FPS)
+        std::thread([this]() {
+            rclcpp::Rate capture_rate(60); // Fixed capture rate
         while (rclcpp::ok())
         {
             cv::Mat frame;
             cap_.read(frame);
             if (!frame.empty())
             {
-                split_and_publish(frame);
+                    std::lock_guard<std::mutex> lock(frame_mutex_);
+                    latest_frame_ = frame.clone(); // Store the latest frame
+                }
+                capture_rate.sleep();
+            }
+        }).detach();
+
+        // Start a timer to publish frames at the desired rate (parameter `fps`)
+        publish_timer_ = this->create_wall_timer(
+            std::chrono::milliseconds(1000 / fps_), // Publish interval based on `fps`
+            [this]() {
+                std::lock_guard<std::mutex> lock(frame_mutex_);
+                if (!latest_frame_.empty())
+                {
+                    split_and_publish(latest_frame_); // Publish the latest frame
 
                 if (vis_cv_image_)
                 {
-                    cv::imshow("Camera", frame);
+                    cv::imshow("Camera", latest_frame_);
                     cv::waitKey(1);
                 }
             }
-            rate.sleep();
-        }
+            });
     }
 
     void split_and_publish(const cv::Mat& frame)
@@ -199,6 +215,9 @@ private:
     bool vis_cv_image_;
     std::string left_camera_info_url_;
     std::string right_camera_info_url_;
+    cv::Mat latest_frame_;
+    std::mutex frame_mutex_;
+    rclcpp::TimerBase::SharedPtr publish_timer_;
 };
 
 int main(int argc, char *argv[])

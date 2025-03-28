@@ -11,7 +11,7 @@ def generate_launch_description():
         DeclareLaunchArgument('fps', default_value='60', description='Frames per second'),
         DeclareLaunchArgument('image_width', default_value='1600', description='Image width'),
         DeclareLaunchArgument('image_height', default_value='600', description='Image height'),
-        DeclareLaunchArgument('vis_cv_image', default_value='false', description='Visualize CV image'),
+        DeclareLaunchArgument('vis_cv_image', default_value='true', description='Visualize CV image'),
         DeclareLaunchArgument('left_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/left_camera.yaml', description='Left camera info URL'),
         DeclareLaunchArgument('right_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/right_camera.yaml', description='Right camera info URL'),
 

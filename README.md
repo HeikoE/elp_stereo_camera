@@ -1,6 +1,7 @@
 # elp_stereo_camera
 
 ROS2 camera driver for the ELP stereo camera, tested with ROS Jazzy and the ELP-USB3D1080P120-H120 model.
+The node reads out the camera images at highest fps to minimize motion blur of the camera. The images are published at specified fps to the ROS system.
 
 The supported formats of the camera can be found in `/config/supported_formats.txt`.  
 To create disparity images and/or point clouds, you need to calibrate the camera and adjust the camera parameter files in `/cam_params`.

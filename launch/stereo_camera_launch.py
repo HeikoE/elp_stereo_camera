@@ -1,13 +1,19 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
-from pathlib import Path
-
-ELP_STEREO_CAMERA_DIR = get_package_share_directory('elp_stereo_camera')
-param_path = Path(ELP_STEREO_CAMERA_DIR, 'config', 'stereo_camera_params.yaml')
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     return LaunchDescription([
+
+        # Declare launch arguments
+        DeclareLaunchArgument('video_port', default_value='6', description='Video port of the camera'),
+        DeclareLaunchArgument('fps', default_value='60', description='Frames per second'),
+        DeclareLaunchArgument('image_width', default_value='1600', description='Image width'),
+        DeclareLaunchArgument('image_height', default_value='600', description='Image height'),
+        DeclareLaunchArgument('vis_cv_image', default_value='false', description='Visualize CV image'),
+        DeclareLaunchArgument('left_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/left_camera.yaml', description='Left camera info URL'),
+        DeclareLaunchArgument('right_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/right_camera.yaml', description='Right camera info URL'),
 
         # Stereo camera node
         Node(
@@ -15,7 +21,15 @@ def generate_launch_description():
             executable='stereo_camera_node',
             name='stereo_camera_node',
             output='screen',
-            parameters=[param_path]
+            parameters=[{
+                'video_port': LaunchConfiguration('video_port'),
+                'fps': LaunchConfiguration('fps'),
+                'image_width': LaunchConfiguration('image_width'),
+                'image_height': LaunchConfiguration('image_height'),
+                'vis_cv_image': LaunchConfiguration('vis_cv_image'),
+                'left_camera_info_url': LaunchConfiguration('left_camera_info_url'),
+                'right_camera_info_url': LaunchConfiguration('right_camera_info_url'),
+            }]
         ),
 
         # Static transform for camera_link (world-oriented) to camera_optical_link

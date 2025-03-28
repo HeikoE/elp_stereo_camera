@@ -24,8 +24,3 @@ ros2 run camera_calibration cameracalibrator --approximate 0.1 --size 10x7 --squ
 ```bash
 ros2 launch stereo_image_proc stereo_image_proc.launch.py namespace:=stereo
 ```
-
-### Image Rectification (standalone):
-```bash
-ros2 launch elp_stereo_camera stereo_image_proc_launch.py
-```

@@ -1,9 +1,0 @@
-stereo_camera_node:
-  ros__parameters:
-    video_port: 6
-    fps: 60
-    image_width: 1600
-    image_height: 600
-    vis_cv_image: true
-    left_camera_info_url: "package://elp_stereo_camera/cam_params/left_camera.yaml"
-    right_camera_info_url: "package://elp_stereo_camera/cam_params/right_camera.yaml"

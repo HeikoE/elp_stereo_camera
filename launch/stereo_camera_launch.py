@@ -7,15 +7,17 @@ def generate_launch_description():
     return LaunchDescription([
 
         # Declare launch arguments
-        DeclareLaunchArgument('video_port', default_value='6', description='Video port of the camera'),
+        DeclareLaunchArgument('video_port', default_value='2', description='Video port of the camera'),
         DeclareLaunchArgument('fps', default_value='60', description='Frames per second'),
         DeclareLaunchArgument('image_width', default_value='1280', description='Image width'),
         DeclareLaunchArgument('image_height', default_value='480', description='Image height'),
-        DeclareLaunchArgument('vis_cv_image', default_value='true', description='Visualize CV image'),
-        DeclareLaunchArgument('enable_rectification', default_value='true', description='Perform stereo rectification'),
+        DeclareLaunchArgument('vis_raw_cam_img', default_value='false', description='Visualize raw image of camera'),
+        DeclareLaunchArgument('vis_rect_img_overlay', default_value='false', description='Visualize overlay of rectified image'),
+        DeclareLaunchArgument('publish_raw_images', default_value='false', description='Publish raw images'),
+        DeclareLaunchArgument('publish_rectified_images', default_value='true', description='Publish rect images'),
         DeclareLaunchArgument('left_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/left_camera.yaml', description='Left camera info URL'),
         DeclareLaunchArgument('right_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/right_camera.yaml', description='Right camera info URL'),
-
+        DeclareLaunchArgument('minimize_motion_blur', default_value='true', description='Trick to minimize motion blur for rolling shutter cameras'),
 
 
         # Stereo camera node
@@ -29,10 +31,13 @@ def generate_launch_description():
                 'fps': LaunchConfiguration('fps'),
                 'image_width': LaunchConfiguration('image_width'),
                 'image_height': LaunchConfiguration('image_height'),
-                'vis_cv_image': LaunchConfiguration('vis_cv_image'),
-                'enable_rectification': LaunchConfiguration('enable_rectification'),
+                'vis_raw_cam_img': LaunchConfiguration('vis_raw_cam_img'),
+                'vis_rect_img_overlay': LaunchConfiguration('vis_rect_img_overlay'),
+                'publish_raw_images': LaunchConfiguration('publish_raw_images'),
+                'publish_rectified_images': LaunchConfiguration('publish_rectified_images'),
                 'left_camera_info_url': LaunchConfiguration('left_camera_info_url'),
                 'right_camera_info_url': LaunchConfiguration('right_camera_info_url'),
+                'minimize_motion_blur': LaunchConfiguration('minimize_motion_blur'),
             }]
         ),
 

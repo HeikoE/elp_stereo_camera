@@ -9,11 +9,14 @@ def generate_launch_description():
         # Declare launch arguments
         DeclareLaunchArgument('video_port', default_value='6', description='Video port of the camera'),
         DeclareLaunchArgument('fps', default_value='60', description='Frames per second'),
-        DeclareLaunchArgument('image_width', default_value='1600', description='Image width'),
-        DeclareLaunchArgument('image_height', default_value='600', description='Image height'),
+        DeclareLaunchArgument('image_width', default_value='1280', description='Image width'),
+        DeclareLaunchArgument('image_height', default_value='480', description='Image height'),
         DeclareLaunchArgument('vis_cv_image', default_value='true', description='Visualize CV image'),
+        DeclareLaunchArgument('enable_rectification', default_value='true', description='Perform stereo rectification'),
         DeclareLaunchArgument('left_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/left_camera.yaml', description='Left camera info URL'),
         DeclareLaunchArgument('right_camera_info_url', default_value='package://elp_stereo_camera/cam_params/1280_480/right_camera.yaml', description='Right camera info URL'),
+
+
 
         # Stereo camera node
         Node(
@@ -27,6 +30,7 @@ def generate_launch_description():
                 'image_width': LaunchConfiguration('image_width'),
                 'image_height': LaunchConfiguration('image_height'),
                 'vis_cv_image': LaunchConfiguration('vis_cv_image'),
+                'enable_rectification': LaunchConfiguration('enable_rectification'),
                 'left_camera_info_url': LaunchConfiguration('left_camera_info_url'),
                 'right_camera_info_url': LaunchConfiguration('right_camera_info_url'),
             }]

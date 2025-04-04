@@ -3,7 +3,7 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <sensor_msgs/srv/set_camera_info.hpp>
 #include <opencv2/opencv.hpp>
-#include <cv_bridge/cv_bridge.hpp>
+#include <cv_bridge/cv_bridge.h>
 #include <camera_info_manager/camera_info_manager.hpp>
 #include <mutex>
 #include <thread>

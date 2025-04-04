@@ -18,7 +18,7 @@ ros2 launch elp_stereo_camera stereo_camera_launch.py
 
 ### Camera Calibration (example)
 ```bash
-ros2 run camera_calibration cameracalibrator --approximate 0.1 --size 10x7 --square 0.025 right:=/stereo/right/image_raw left:=/stereo/left/image_raw right_camera:=/stereo/right left_camera:=/stereo/left
+ros2 run camera_calibration cameracalibrator --size 10x7 --square 0.025 right:=/stereo/right/image_raw left:=/stereo/left/image_raw right_camera:=/stereo/right left_camera:=/stereo/left
 ```
 
 ### Stereo Image Processing (rectification, disparity image and point cloud):
